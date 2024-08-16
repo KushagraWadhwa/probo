@@ -1,5 +1,5 @@
 import {Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -13,10 +13,15 @@ export enum CustomTab {
   Tab2 = 'Tab2',
 }
 
-const TabButtons = () => {
+interface TabButtonProps {
+  onSelectTab?: (btnVal: number) => void;
+  selectedTab?: number;
+}
+
+const TabButtons = (props: TabButtonProps) => {
   const [selectedTab, setSelectedTab] = useState<CustomTab>(CustomTab.Tab1);
 
-  const tabPointX = useSharedValue(180);
+  const tabPointX = useSharedValue(props?.selectedTab === 1 ? 180 : 360);
 
   const handlePress = (index: number) => {
     if (index === 1) {
@@ -25,6 +30,14 @@ const TabButtons = () => {
       setSelectedTab(CustomTab.Tab2);
     }
   };
+
+  useEffect(() => {
+    if (props?.selectedTab === 1) {
+      setSelectedTab(CustomTab.Tab1);
+    } else {
+      setSelectedTab(CustomTab.Tab2);
+    }
+  }, [props?.selectedTab]);
 
   const onTabPress = (index: number) => {
     tabPointX.value = withTiming(180 * index, {}, () => {
@@ -59,7 +72,8 @@ const TabButtons = () => {
           animatedStyle,
           {
             position: 'absolute',
-            backgroundColor: colors.darkBlue,
+            backgroundColor:
+              selectedTab === CustomTab.Tab1 ? colors.darkBlue : colors.red,
             borderRadius: 25,
             width: 180,
             height: 45,
@@ -75,6 +89,7 @@ const TabButtons = () => {
         ]}>
         <TouchableOpacity
           onPress={() => {
+            props?.onSelectTab && props?.onSelectTab(1);
             onTabPress(1);
           }}
           style={{
@@ -88,11 +103,12 @@ const TabButtons = () => {
               color:
                 selectedTab === CustomTab.Tab1 ? colors.white : colors.black,
             }}>
-            {'Tab 1'}
+            {'Yes ₹ 5.3'}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
+            props?.onSelectTab && props?.onSelectTab(2);
             onTabPress(2);
           }}
           style={{
@@ -106,7 +122,7 @@ const TabButtons = () => {
               color:
                 selectedTab === CustomTab.Tab2 ? colors.white : colors.black,
             }}>
-            {'Tab 2'}
+            {'No ₹ 4.7'}
           </Text>
         </TouchableOpacity>
       </View>

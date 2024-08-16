@@ -1,6 +1,7 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Styles} from '../styles/product-categories.styles';
 import {
+  Dimensions,
   FlatList,
   Image,
   Modal,
@@ -21,6 +22,8 @@ import Animated from 'react-native-reanimated';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import TabButtons from '../../../core-components/atoms/tabButtons/TabButtons.component';
 import {colors} from '../../../core-constants';
+import {Slider} from '@miblanchard/react-native-slider';
+import SwipeButton from 'rn-swipe-button';
 
 interface ProductCategoriesProps {
   navigation?: NavigationProp<ParamListBase>;
@@ -28,6 +31,8 @@ interface ProductCategoriesProps {
 
 const ProductCategories = (props: ProductCategoriesProps) => {
   const refRBSheet = useRef([]);
+  const [sliderValue, setSliderValue] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(1);
 
   return (
     <>
@@ -111,12 +116,18 @@ const ProductCategories = (props: ProductCategoriesProps) => {
                     </View>
                     <View style={Styles.buttonView}>
                       <TouchableOpacity
-                        onPress={() => refRBSheet?.current?.open()}
+                        onPress={() => {
+                          setSelectedTab(1);
+                          refRBSheet?.current?.open();
+                        }}
                         style={Styles.button1}>
                         <Text style={Styles.btnTitle1}>{'Yes ₹ 5.3'}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
-                        onPress={() => refRBSheet?.current?.open()}
+                        onPress={() => {
+                          setSelectedTab(2);
+                          refRBSheet?.current?.open();
+                        }}
                         style={Styles.button2}>
                         <Text style={Styles.buttonTitle2}>{'No  ₹ 4.7'}</Text>
                       </TouchableOpacity>
@@ -133,7 +144,7 @@ const ProductCategories = (props: ProductCategoriesProps) => {
           container: {
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
-            height: 350,
+            height: 400,
           },
         }}
         ref={ref => (refRBSheet.current = ref)}>
@@ -148,7 +159,16 @@ const ProductCategories = (props: ProductCategoriesProps) => {
             <LocalSvg asset={require('../../../../assets/coffee.svg')} />
           </View>
         </View>
-        <TabButtons />
+        <TabButtons
+          selectedTab={selectedTab}
+          onSelectTab={btnSelect => {
+            if (btnSelect === 1) {
+              setSelectedTab(1);
+            } else {
+              setSelectedTab(2);
+            }
+          }}
+        />
         <View
           style={{
             borderColor: colors.gray,
@@ -164,19 +184,102 @@ const ProductCategories = (props: ProductCategoriesProps) => {
               <Text style={{textAlign: 'right'}}>{'132045 aty available'}</Text>
             </View>
           </View>
-          <View style={{borderBottomWidth: 0.5, borderStyle: 'dashed'}}>
-            <Text>{'Slider'}</Text>
+          <View
+            style={{
+              borderBottomWidth: 0.5,
+              borderStyle: 'dashed',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              paddingVertical: 10,
+              marginBottom: 17,
+            }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: colors.gray,
+                height: 25,
+                width: 25,
+                alignItems: 'center',
+                marginTop: 7,
+                borderRadius: 8,
+              }}
+              onPress={() => {
+                if (sliderValue > 0) {
+                  setSliderValue(parseFloat(sliderValue.toString()) - 1);
+                }
+              }}>
+              <Text style={{fontWeight: 'bold'}}>{'-'}</Text>
+            </TouchableOpacity>
+            <View style={{flex: 1, marginHorizontal: 15}}>
+              <Slider
+                maximumValue={100}
+                minimumValue={0}
+                trackStyle={{height: 10, borderRadius: 10}}
+                value={sliderValue}
+                onValueChange={value => setSliderValue(value)}
+              />
+            </View>
+            <TouchableOpacity
+              style={{
+                backgroundColor: colors.gray,
+                height: 25,
+                width: 25,
+                alignItems: 'center',
+                marginTop: 7,
+                borderRadius: 8,
+              }}
+              onPress={() => {
+                if (sliderValue < 100) {
+                  setSliderValue(parseFloat(sliderValue.toString()) + 1);
+                }
+              }}>
+              <Text style={{fontWeight: 'bold'}}>{'+'}</Text>
+            </TouchableOpacity>
           </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginHorizontal: 10,
+            }}>
             <View>
-              <Text style={{textAlign: 'center'}}>{'₹ 5.3'}</Text>
+              <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                {'₹ 5.3'}
+              </Text>
               <Text>{'You put'}</Text>
             </View>
             <View>
-              <Text style={{textAlign: 'center'}}>{'₹ 5.3'}</Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  color: 'green',
+                }}>
+                {'₹ 10'}
+              </Text>
               <Text>{'You get'}</Text>
             </View>
           </View>
+        </View>
+        <View style={{paddingHorizontal: 15, alignItems: 'center'}}>
+          <SwipeButton
+            // disabled={cartData?.length <= 0}
+            titleColor="white"
+            railFillBackgroundColor={
+              selectedTab === 1 ? colors.darkBlue : colors.red
+            }
+            // railStyles={Styles.buttonRailStyle}
+            railBackgroundColor={
+              selectedTab === 1 ? colors.darkBlue : colors.red
+            }
+            // railBorderColor={colorBg}
+            railFillBorderColor="transparent"
+            height={62}
+            width={Dimensions.get('screen').width - 30}
+            title={'Swipe for Yes'}
+            shouldResetAfterSuccess
+            thumbIconBackgroundColor="white"
+            thumbIconBorderColor="white"
+          />
         </View>
       </RBSheet>
     </>
