@@ -4,7 +4,6 @@ import {
   Dimensions,
   FlatList,
   Image,
-  Modal,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -18,7 +17,6 @@ import {
 } from '../../../core-constants/product-categories';
 import {LocalSvg} from 'react-native-svg/css';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
-import Animated from 'react-native-reanimated';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import TabButtons from '../../../core-components/atoms/tabButtons/TabButtons.component';
 import {colors} from '../../../core-constants';
@@ -141,20 +139,13 @@ const ProductCategories = (props: ProductCategoriesProps) => {
       </ScrollView>
       <RBSheet
         customStyles={{
-          container: {
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            height: 400,
-          },
+          container: Styles.modalContainer,
         }}
         ref={ref => (refRBSheet.current = ref)}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 15,
-          }}>
-          <Text>{'Kolkata wo win the match vs Mumbai'} </Text>
+        <View style={Styles.modalTitle}>
+          <Text style={Styles.fontBold}>
+            {'Kolkata wo win the match vs Mumbai'}{' '}
+          </Text>
           <View>
             <LocalSvg asset={require('../../../../assets/coffee.svg')} />
           </View>
@@ -169,109 +160,63 @@ const ProductCategories = (props: ProductCategoriesProps) => {
             }
           }}
         />
-        <View
-          style={{
-            borderColor: colors.gray,
-            borderWidth: 0.6,
-            borderRadius: 10,
-            margin: 15,
-            padding: 10,
-          }}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={Styles.modalBox}>
+          <View style={Styles.priceTitle}>
             <Text>{'Price'}</Text>
             <View>
-              <Text style={{textAlign: 'right'}}>{'₹ 5.3'}</Text>
-              <Text style={{textAlign: 'right'}}>{'132045 aty available'}</Text>
+              <Text style={Styles.alignRight}>{'₹ 5.3'}</Text>
+              <Text style={Styles.alignRight}>{'132045 aty available'}</Text>
             </View>
           </View>
-          <View
-            style={{
-              borderBottomWidth: 0.5,
-              borderStyle: 'dashed',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              paddingVertical: 10,
-              marginBottom: 17,
-            }}>
+          <View style={Styles.modalSlider}>
             <TouchableOpacity
-              style={{
-                backgroundColor: colors.gray,
-                height: 25,
-                width: 25,
-                alignItems: 'center',
-                marginTop: 7,
-                borderRadius: 8,
-              }}
+              style={Styles.minusBox}
               onPress={() => {
                 if (sliderValue > 0) {
                   setSliderValue(parseFloat(sliderValue.toString()) - 1);
                 }
               }}>
-              <Text style={{fontWeight: 'bold'}}>{'-'}</Text>
+              <Text style={Styles.fontBold}>{'-'}</Text>
             </TouchableOpacity>
-            <View style={{flex: 1, marginHorizontal: 15}}>
+            <View style={Styles.sliderView}>
               <Slider
                 maximumValue={100}
                 minimumValue={0}
-                trackStyle={{height: 10, borderRadius: 10}}
+                trackStyle={Styles.trackStyle}
                 value={sliderValue}
                 onValueChange={value => setSliderValue(value)}
               />
             </View>
             <TouchableOpacity
-              style={{
-                backgroundColor: colors.gray,
-                height: 25,
-                width: 25,
-                alignItems: 'center',
-                marginTop: 7,
-                borderRadius: 8,
-              }}
+              style={Styles.plusBox}
               onPress={() => {
                 if (sliderValue < 100) {
                   setSliderValue(parseFloat(sliderValue.toString()) + 1);
                 }
               }}>
-              <Text style={{fontWeight: 'bold'}}>{'+'}</Text>
+              <Text style={Styles.fontBold}>{'+'}</Text>
             </TouchableOpacity>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginHorizontal: 10,
-            }}>
+          <View style={Styles.amountBox}>
             <View>
-              <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-                {'₹ 5.3'}
-              </Text>
+              <Text style={Styles.amountValue}>{'₹ 5.3'}</Text>
               <Text>{'You put'}</Text>
             </View>
             <View>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  color: 'green',
-                }}>
-                {'₹ 10'}
-              </Text>
+              <Text style={Styles.rightAmountValue}>{'₹ 10'}</Text>
               <Text>{'You get'}</Text>
             </View>
           </View>
         </View>
-        <View style={{paddingHorizontal: 15, alignItems: 'center'}}>
+        <View style={Styles.swipeView}>
           <SwipeButton
-            // disabled={cartData?.length <= 0}
             titleColor="white"
             railFillBackgroundColor={
               selectedTab === 1 ? colors.darkBlue : colors.red
             }
-            // railStyles={Styles.buttonRailStyle}
             railBackgroundColor={
               selectedTab === 1 ? colors.darkBlue : colors.red
             }
-            // railBorderColor={colorBg}
             railFillBorderColor="transparent"
             height={62}
             width={Dimensions.get('screen').width - 30}
@@ -280,6 +225,9 @@ const ProductCategories = (props: ProductCategoriesProps) => {
             thumbIconBackgroundColor="white"
             thumbIconBorderColor="white"
           />
+        </View>
+        <View style={Styles.balanceView}>
+          <Text style={Styles.fontBold}>{'Available Balance : 400.00'}</Text>
         </View>
       </RBSheet>
     </>
