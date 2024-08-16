@@ -19,7 +19,6 @@ const HeaderBackButton = (props: HeaderBackButtonProps) => {
           <Text style={Styles.titleHead}>
             {props?.title ?? 'Product Categories'}
           </Text>
-          <Text style={Styles.subtitleHead}>{'Select any product to add'}</Text>
         </View>
       </View>
 

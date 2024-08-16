@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import {Stack} from '../../../core-navigations/root.navigation';
-import {Search, ProductCategories} from '../screens';
+import {Event, ProductCategories} from '../screens';
 
 export default function DashboardStack() {
   const dashboardRoutes = [
@@ -10,8 +10,8 @@ export default function DashboardStack() {
       screenID: 'PROD-CAT',
     },
     {
-      name: 'search',
-      component: Search,
+      name: 'event',
+      component: Event,
       screenID: 'SRCH',
     },
   ];

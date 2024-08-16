@@ -1,4 +1,4 @@
 import ProductCategories from './product-categories.screen';
-import Search from './search.screen';
+import Event from './event.screen';
 
-export {ProductCategories, Search};
+export {ProductCategories, Event};

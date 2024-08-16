@@ -102,7 +102,12 @@ const ProductCategories = (props: ProductCategoriesProps) => {
             <View style={Styles.matchListView}>
               {matchList.map((item, index) => {
                 return (
-                  <TouchableOpacity key={index} style={Styles.matchTouch}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      props?.navigation?.navigate('event');
+                    }}
+                    key={index}
+                    style={Styles.matchTouch}>
                     <View style={Styles.matchListViewAlign}>
                       <View>
                         <Text style={Styles.matchTextTitle}>{item.title}</Text>

@@ -11,12 +11,6 @@ import {LocalSvg} from 'react-native-svg/css';
 
 export const Stack = createNativeStackNavigator();
 export const navigationRef = createNavigationContainerRef();
-// const routes = [
-//   {
-//     name: 'dashboardStack',
-//     component: DashboardStack,
-//   },
-// ];
 
 const Tab = createBottomTabNavigator();
 
@@ -81,17 +75,6 @@ const Root = () => {
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator initialRouteName={'dashboardStack'}>
-        {/* {routes?.map(route => {
-          return (
-            <Stack.Screen
-              key={route?.name}
-              name={route?.name}
-              component={route?.component}
-              options={{headerShown: false}}
-            />
-          );
-        })} */}
-        {/* <MyTabs /> */}
         <Stack.Screen
           name={'MyTabs'}
           component={MyTabs}
